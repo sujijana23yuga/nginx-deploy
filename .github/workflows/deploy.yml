@@ -1,0 +1,24 @@
+name: Deploy with Nginx
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install Nginx
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y nginx
+
+    - name: Deploy files
+      run: |
+        sudo rm -rf /var/www/html/*
+        sudo cp -r ./* /var/www/html/
+        sudo systemctl restart nginx
